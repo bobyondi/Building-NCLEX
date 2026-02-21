@@ -1,72 +1,62 @@
-export type ExamType = "RN" | "PN";
+export interface Subject {
+  id: string;
+  name: string;
+  icon: string;
+  color: string;
+  description: string;
+  subtopics: string[];
+}
 
-export type ConfidenceLevel = "not_sure" | "somewhat_sure" | "very_sure";
-
-export type SelfAssessment = "just_starting" | "some_foundation" | "fairly_confident" | "almost_ready";
-
-export type NCLEXCategory =
-  | "pharmacology"
-  | "medical_surgical"
-  | "maternal_newborn"
-  | "pediatrics"
-  | "mental_health"
-  | "fundamentals"
-  | "safety_infection_control"
-  | "management_leadership";
-
-export const CATEGORY_LABELS: Record<NCLEXCategory, string> = {
-  pharmacology: "Pharmacology",
-  medical_surgical: "Medical-Surgical",
-  maternal_newborn: "Maternal-Newborn",
-  pediatrics: "Pediatrics",
-  mental_health: "Mental Health",
-  fundamentals: "Fundamentals",
-  safety_infection_control: "Safety & Infection Control",
-  management_leadership: "Management & Leadership",
-};
+export interface Choice {
+  id: string;
+  t: string;
+}
 
 export interface Question {
-  id: string;
+  id: number;
+  cat: string;
   stem: string;
-  choices: { label: string; text: string }[];
-  correctAnswer: string;
+  choices: Choice[];
+  correct: string;
   rationale: string;
-  whyWrong: Record<string, string>;
-  keyTakeaway: string;
-  category: NCLEXCategory;
-  difficulty: "easy" | "medium" | "hard";
+  whyNot?: Record<string, string>;
+  keyConcept: string;
 }
 
-export interface DiagnosticAnswer {
-  questionId: string;
-  selectedAnswer: string;
-  confidence: ConfidenceLevel;
-  isCorrect: boolean;
-  timeSpentMs: number;
+export interface Testimonial {
+  platform: "tiktok" | "reddit" | "instagram";
+  user: string;
+  handle: string;
+  avatar: [string, string];
+  text: string;
+  likes?: string;
+  upvotes?: string;
+  comments?: string;
+  badge?: string;
 }
 
-export interface DiagnosticResult {
-  answers: DiagnosticAnswer[];
-  accuracy: number;
-  avgTimePerQuestion: number;
-  categoryBreakdown: Record<NCLEXCategory, { correct: number; total: number }>;
-  weakestCategories: NCLEXCategory[];
-  strongestCategories: NCLEXCategory[];
+export interface PricingPlan {
+  name: string;
+  price: string;
+  period: string;
+  pop: boolean;
+  features: string[];
+  cta: string;
 }
 
-export interface OnboardingProfile {
-  examType: ExamType | null;
-  targetDate: string | null;
-  studyDaysPerWeek: number | null;
-  studyMinutesPerDay: number | null;
-  selfAssessment: SelfAssessment | null;
-  diagnosticResult: DiagnosticResult | null;
+export interface UserAnswer {
+  questionId: number;
+  selected: string;
+  confidence: "guess" | "unsure" | "confident" | null;
+  correct: boolean;
+  cat: string;
 }
 
-export interface StudyPlan {
-  totalWeeks: number;
-  sessionsPerWeek: number;
-  questionsPerDay: number;
-  focusAreas: NCLEXCategory[];
-  dailyTimeMinutes: number;
+export interface OnboardingData {
+  focus: string;
+  nclexDate: string | null;
+  readiness: "not" | "somewhat" | "confident" | null;
+  dailyTime: "15" | "30" | "60" | null;
+  email: string;
+  reminderTime: string;
 }
